@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="af">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6f8f72">
+<link rel="manifest" href="manifest.json">
+<title>My Reset</title>
+<style>
+:root{--green:#6f8f72;--dark:#294333;--cream:#f7f4ec;--card:#fffdf8;--line:#e4dfd3;--muted:#6d756f;--accent:#d9eadb;--danger:#a75d58}
+*{box-sizing:border-box} body{margin:0;background:var(--cream);color:var(--dark);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+.app{max-width:620px;margin:auto;min-height:100vh;padding-bottom:88px}.top{padding:28px 20px 12px}.brand{font-weight:800;font-size:25px}.sub{color:var(--muted);margin-top:4px}
+main{padding:8px 16px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 5px 20px #2943330b}
+.next{background:var(--green);color:white;border:0}.next .eyebrow{opacity:.8}.next h1{font-size:26px;line-height:1.15;margin:8px 0 14px}.btn{border:0;border-radius:15px;padding:13px 16px;font-weight:750;font-size:15px;cursor:pointer}.primary{background:white;color:var(--dark)}.soft{background:var(--accent);color:var(--dark)}.ghost{background:transparent;border:1px solid var(--line);color:var(--dark)}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{font-size:30px;font-weight:800}.muted{color:var(--muted);font-size:14px}.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:800;color:var(--muted)}
+.progress{height:11px;background:#e7e4da;border-radius:99px;overflow:hidden;margin:12px 0}.bar{height:100%;background:var(--green);border-radius:99px}
+.task{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.task:last-child{border-bottom:0}.check{width:30px;height:30px;border-radius:50%;border:2px solid #aab2aa;display:grid;place-items:center;flex:none;background:white}.done .check{background:var(--green);border-color:var(--green);color:white}.done .tasktext{text-decoration:line-through;color:#8a908b}.time{font-weight:800;font-size:13px;color:var(--muted);width:52px}.nav{position:fixed;bottom:0;left:0;right:0;background:#fffdf9ee;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:5}.navinner{max-width:620px;width:100%;display:grid;grid-template-columns:repeat(5,1fr)}.nav button{border:0;background:transparent;padding:11px 3px 13px;color:var(--muted);font-size:11px;font-weight:700}.nav button.active{color:var(--green)}.nav span{display:block;font-size:20px;margin-bottom:2px}
+.hidden{display:none!important}.pill{display:inline-block;padding:7px 10px;border-radius:99px;background:var(--accent);font-size:12px;font-weight:800}.smallbtn{padding:8px 11px;border-radius:12px;border:1px solid var(--line);background:white;font-weight:750}
+.input{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:white;font-size:16px}.field{margin:12px 0}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}.weekday{display:flex;gap:6px;overflow:auto;padding-bottom:5px}.day{min-width:54px;border:1px solid var(--line);background:white;border-radius:13px;padding:8px;text-align:center}.day.selected{background:var(--green);color:white;border-color:var(--green)}
+@media(max-width:380px){.grid{grid-template-columns:1fr}.top{padding-left:15px;padding-right:15px}main{padding:5px 12px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="brand">🌱 My Reset</div><div class="sub" id="dateText"></div></header>
+<main id="screen"></main>
+<nav class="nav"><div class="navinner">
+<button data-screen="today" class="active"><span>🏠</span>Vandag</button>
+<button data-screen="week"><span>🗓️</span>Week</button>
+<button data-screen="food"><span>🍽️</span>Kos</button>
+<button data-screen="move"><span>🏃‍♀️</span>Beweeg</button>
+<button data-screen="progress"><span>📈</span>Vordering</button>
+</div></nav>
+</div>
+<script>
+const KEY='myreset-v1';
+const defaultData={
+ waterGoal:2000, water:0, weight:127, goalWeight:80, eatStart:'06:00', eatEnd:'18:00',
+ tasks:[
+  {id:'breakfast',time:'06:00',title:'Ontbyt',desc:'Proteïenryke ontbyt'},
+  {id:'water1',time:'08:00',title:'Drink water',desc:'300 ml'},
+  {id:'move',time:'10:00',title:'Beweging',desc:'10 minute sessie'},
+  {id:'lunch',time:'12:00',title:'Middagete',desc:'Proteïen + groente'},
+  {id:'water2',time:'14:00',title:'Drink water',desc:'300 ml'},
+  {id:'water3',time:'16:00',title:'Drink water',desc:'300 ml'},
+  {id:'dinner',time:'17:30',title:'Aandete',desc:'Proteïen + groente'},
+  {id:'fast',time:'18:00',title:'Kombuis sluit',desc:'Begin jou vas'},
+  {id:'close',time:'20:00',title:'Aandafsluiting',desc:'Berei môre voor'}
+ ], done:{}, history:[], settings:{name:'Riekie'}
+};
+let data=JSON.parse(localStorage.getItem(KEY)||'null')||defaultData;
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function todayKey(){return new Date().toISOString().slice(0,10)}
+function doneCount(){return data.tasks.filter(t=>data.done[t.id]).length}
+function fmtDate(){return new Intl.DateTimeFormat('af-ZA',{weekday:'long',day:'numeric',month:'long'}).format(new Date())}
+document.getElementById('dateText').textContent=fmtDate();
+function nextTask(){
+ const pending=data.tasks.filter(t=>!data.done[t.id]);
+ if(!pending.length)return null;
+ const now=new Date(), mins=now.getHours()*60+now.getMinutes();
+ return pending.find(t=>{let [h,m]=t.time.split(':').map(Number);return h*60+m>=mins})||pending[0];
+}
+function taskCard(t){
+ return `<div class="task ${data.done[t.id]?'done':''}" onclick="toggleTask('${t.id}')"><div class="time">${t.time}</div><div class="check">${data.done[t.id]?'✓':''}</div><div class="tasktext"><b>${t.title}</b><div class="muted">${t.desc}</div></div></div>`
+}
+function renderToday(){
+ const n=nextTask(), pct=Math.round(doneCount()/data.tasks.length*100), wp=Math.min(100,data.water/data.waterGoal*100);
+ document.getElementById('screen').innerHTML=`
+ <div class="card next">${n?`<div class="eyebrow">Wat moet ek nou doen?</div><h1>${n.title}</h1><div style="margin-bottom:14px">${n.desc}</div><button class="btn primary" onclick="toggleTask('${n.id}')">✓ Ek het dit gedoen</button>`:`<div class="eyebrow">Vandag</div><h1>Jy het jou dag se plan voltooi! 🎉</h1><div>Jy het opgedaag. Dit tel.</div>`}</div>
+ <div class="grid"><div class="card"><div class="eyebrow">Water</div><div class="metric">${data.water}<span style="font-size:15px;font-weight:600"> / ${data.waterGoal} ml</span></div><div class="progress"><div class="bar" style="width:${wp}%"></div></div><button class="smallbtn" onclick="addWater(300)">+300 ml</button></div>
+ <div class="card"><div class="eyebrow">Vandag</div><div class="metric">${doneCount()}/${data.tasks.length}</div><div class="muted">${pct}% van take klaar</div><div class="progress"><div class="bar" style="width:${pct}%"></div></div></div></div>
+ <div class="card"><div class="row"><h3 style="margin:0">Vandag se pad</h3><span class="pill">${data.eatStart}–${data.eatEnd}</span></div>${data.tasks.map(taskCard).join('')}</div>
+ <div class="card"><div class="eyebrow">Herinnering</div><b>Jy hoef nie alles te onthou nie.</b><p class="muted">Kyk net na die volgende groot groen kaart. Ons doen een ding op 'n slag.</p></div>`;
+}
+function renderWeek(){
+ const days=['Ma','Di','Wo','Do','Vr','Sa','So'];
+ document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Week 1</div><h2 style="margin:6px 0 4px">Jou eenvoudige weekplan</h2><p class="muted">Begin klein. Konsekwentheid is die doel.</p>
+ <div class="weekday">${days.map((d,i)=>`<button class="day ${i===0?'selected':''}">${d}<br><small>${i+1}</small></button>`).join('')}</div></div>
+ <div class="card"><h3>Beweging</h3>
+ <div class="task"><div class="time">Ma</div><div>🏃‍♀️ Trampoline <div class="muted">10 min lae impak</div></div></div>
+ <div class="task"><div class="time">Di</div><div>🧘 Tai Chi Walking <div class="muted">10 min</div></div></div>
+ <div class="task"><div class="time">Wo</div><div>🚶 Sagte stap <div class="muted">10–15 min</div></div></div>
+ <div class="task"><div class="time">Do</div><div>💪 Krag <div class="muted">10 min, geen toerusting</div></div></div>
+ <div class="task"><div class="time">Vr</div><div>🧘 Tai Chi Walking <div class="muted">10 min</div></div></div>
+ <div class="task"><div class="time">Sa</div><div>🚶 Gemaklike beweging <div class="muted">10–20 min</div></div></div>
+ <div class="task"><div class="time">So</div><div>🧘 Tai Chi Walking <div class="muted">10 min</div></div></div></div>
+ <div class="card"><button class="btn soft" onclick="alert('Week 1 is jou beginplan. In ’n volgende weergawe kan jy hier elke week self take, tye en maaltye invoer.')">✚ Pas weekplan aan</button></div>`;
+}
+function renderFood(){
+ document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Eetvenster</div><h2>${data.eatStart} → ${data.eatEnd}</h2><p class="muted">Proteïen eerste • groente • beheerde koolhidrate • genoeg vloeistof</p></div>
+ ${[
+ ['06:00','Ontbyt','2 eiers • ½ avokado • tamatie/spinasie • 1 sny volgraanbrood'],
+ ['12:00','Middagete','Hoender • groot slaai • klein patat'],
+ ['17:30','Aandete','Vis • groente • klein porsie aartappel']
+ ].map(x=>`<div class="card"><div class="eyebrow">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p><button class="smallbtn" onclick="markMeal('${x[1]}')">✓ Ek het geëet</button></div>`).join('')}
+ <div class="card"><h3>🌙 Fasting</h3><p>Na ${data.eatEnd} begin jou vas. Jy hoef nie langer te vas as wat vir jou veilig en volhoubaar is nie.</p><button class="btn soft" onclick="fastingStatus()">Wys my fasting-status</button></div>`;
+}
+function renderMove(){
+ document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Vandag</div><h2>Beweeg sag, maar beweeg.</h2><p class="muted">Begin op ’n vlak wat gemaklik voel. Stop as jy pyn, erge benoudheid, duiseligheid of borspyn kry.</p></div>
+ ${[['🏃‍♀️','Mini-trampoline','10 min • lae impak'],['🧘','Tai Chi Walking','10 min • stadig en beheers'],['💪','Krag sonder toerusting','10 min • beginner'],['🚶','Sagte stap','10–20 min']].map((x,i)=>`<div class="card"><div class="row"><div><h3 style="margin:0">${x[0]} ${x[1]}</h3><p class="muted">${x[2]}</p></div><button class="smallbtn" onclick="startMove('${x[1]}')">Begin</button></div></div>`).join('')}
+ <div class="card"><b>⚠️ Veiligheid</b><p class="muted">As jy lanklaas geoefen het of medikasie vir gewigsverlies gebruik, bespreek jou oefen- en fasting-plan met ’n gesondheidswerker.</p></div>`;
+}
+function renderProgress(){
+ const pct=Math.round(doneCount()/data.tasks.length*100);
+ document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Jou reis</div><h2>${data.weight} kg → ${data.goalWeight} kg</h2><div class="progress"><div class="bar" style="width:${Math.max(0,Math.min(100,((data.weight-data.goalWeight)/47)*100))}%"></div></div><p class="muted">Ons fokus eers op die volgende klein mylpaal. Geen straf, geen skuld.</p></div>
+ <div class="grid"><div class="card"><div class="eyebrow">Take</div><div class="metric">${pct}%</div><div class="muted">vandag voltooi</div></div><div class="card"><div class="eyebrow">Water</div><div class="metric">${Math.round(data.water/100)/10} L</div><div class="muted">vandag</div></div></div>
+ <div class="card"><h3>⚙️ My instellings</h3><div class="field"><label>Gewig (kg)</label><input class="input" id="weight" type="number" value="${data.weight}"></div><div class="field"><label>Waterdoel (ml)</label><input class="input" id="goal" type="number" value="${data.waterGoal}"></div><div class="field"><label>Naam</label><input class="input" id="name" value="${data.settings.name}"></div><button class="btn soft" onclick="saveSettings()">Stoor</button></div>`;
+}
+function render(s='today'){
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===s));
+ ({today:renderToday,week:renderWeek,food:renderFood,move:renderMove,progress:renderProgress}[s]||renderToday)();
+}
+function toggleTask(id){data.done[id]=!data.done[id];save();render('today')}
+function addWater(n){data.water=Math.min(data.waterGoal,data.water+n);save();render('today')}
+function markMeal(name){alert(`${name} is aangeteken. ❤️`)}
+function startMove(name){alert(`${name}: begin rustig vir 10 minute. Hierdie eerste weergawe het nog nie die video-skakels ingevul nie.`)}
+function fastingStatus(){let now=new Date();let [h,m]=data.eatEnd.split(':').map(Number);let end=new Date();end.setHours(h,m,0,0);let [sh,sm]=data.eatStart.split(':').map(Number);let start=new Date();start.setHours(sh,sm,0,0);if(now>=end){let mins=Math.round((now-end)/60000);alert(`Jy is tans aan die vas. ${Math.floor(mins/60)} uur ${mins%60} minute sedert ${data.eatEnd}.`)}else alert(`Jou vas begin om ${data.eatEnd}.`)}
+function saveSettings(){data.weight=Number(document.getElementById('weight').value)||data.weight;data.waterGoal=Number(document.getElementById('goal').value)||data.waterGoal;data.settings.name=document.getElementById('name').value||'Riekie';save();render('progress')}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>render(b.dataset.screen)));
+render();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
