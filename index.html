@@ -6,18 +6,22 @@
 <meta name="theme-color" content="#6f8f72">
 <link rel="manifest" href="manifest.json">
 <title>My Reset</title>
-<meta name="app-version" content="2.0">
+<meta name="app-version" content="3.0">
 <style>
-:root{--green:#6f8f72;--dark:#294333;--cream:#f7f4ec;--card:#fffdf8;--line:#e4dfd3;--muted:#6d756f;--accent:#d9eadb;--danger:#a75d58}
-*{box-sizing:border-box} body{margin:0;background:var(--cream);color:var(--dark);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+:root{--green:#6f8f72;--dark:#294333;--cream:#f7f4ec;--card:#fffdf8;--line:#e4dfd3;--muted:#6d756f;--accent:#d9eadb;--warn:#fff1cf}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--dark);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
 .app{max-width:620px;margin:auto;min-height:100vh;padding-bottom:88px}.top{padding:28px 20px 12px}.brand{font-weight:800;font-size:25px}.sub{color:var(--muted);margin-top:4px}
 main{padding:8px 16px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 5px 20px #2943330b}
-.next{background:var(--green);color:white;border:0}.next .eyebrow{opacity:.8}.next h1{font-size:26px;line-height:1.15;margin:8px 0 14px}.btn{border:0;border-radius:15px;padding:13px 16px;font-weight:750;font-size:15px;cursor:pointer}.primary{background:white;color:var(--dark)}.soft{background:var(--accent);color:var(--dark)}.ghost{background:transparent;border:1px solid var(--line);color:var(--dark)}
+.next{background:var(--green);color:white;border:0}.next .eyebrow{opacity:.8}.next h1{font-size:26px;line-height:1.15;margin:8px 0 14px}
+.btn{border:0;border-radius:15px;padding:13px 16px;font-weight:750;font-size:15px;cursor:pointer}.primary{background:white;color:var(--dark)}.soft{background:var(--accent);color:var(--dark)}.ghost{background:transparent;border:1px solid var(--line);color:var(--dark)}.warn{background:var(--warn);color:var(--dark)}
 .row{display:flex;gap:10px;align-items:center;justify-content:space-between}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{font-size:30px;font-weight:800}.muted{color:var(--muted);font-size:14px}.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:800;color:var(--muted)}
 .progress{height:11px;background:#e7e4da;border-radius:99px;overflow:hidden;margin:12px 0}.bar{height:100%;background:var(--green);border-radius:99px}
-.task{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.task:last-child{border-bottom:0}.check{width:30px;height:30px;border-radius:50%;border:2px solid #aab2aa;display:grid;place-items:center;flex:none;background:white}.done .check{background:var(--green);border-color:var(--green);color:white}.done .tasktext{text-decoration:line-through;color:#8a908b}.time{font-weight:800;font-size:13px;color:var(--muted);width:52px}.nav{position:fixed;bottom:0;left:0;right:0;background:#fffdf9ee;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:5}.navinner{max-width:620px;width:100%;display:grid;grid-template-columns:repeat(5,1fr)}.nav button{border:0;background:transparent;padding:11px 3px 13px;color:var(--muted);font-size:11px;font-weight:700}.nav button.active{color:var(--green)}.nav span{display:block;font-size:20px;margin-bottom:2px}
+.task{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.task:last-child{border-bottom:0}.check{width:30px;height:30px;border-radius:50%;border:2px solid #aab2aa;display:grid;place-items:center;flex:none;background:white}.done .check{background:var(--green);border-color:var(--green);color:white}.done .tasktext{text-decoration:line-through;color:#8a908b}.time{font-weight:800;font-size:13px;color:var(--muted);width:52px;flex:none}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fffdf9ee;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:5}.navinner{max-width:620px;width:100%;display:grid;grid-template-columns:repeat(5,1fr)}.nav button{border:0;background:transparent;padding:11px 3px 13px;color:var(--muted);font-size:11px;font-weight:700}.nav button.active{color:var(--green)}.nav span{display:block;font-size:20px;margin-bottom:2px}
 .hidden{display:none!important}.pill{display:inline-block;padding:7px 10px;border-radius:99px;background:var(--accent);font-size:12px;font-weight:800}.smallbtn{padding:8px 11px;border-radius:12px;border:1px solid var(--line);background:white;font-weight:750}
 .input{width:100%;padding:12px;font-family:inherit;border:1px solid var(--line);border-radius:12px;background:white;font-size:16px}.field{margin:12px 0}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}.weekday{display:flex;gap:6px;overflow:auto;padding-bottom:5px}.day{min-width:54px;border:1px solid var(--line);background:white;border-radius:13px;padding:8px;text-align:center}.day.selected{background:var(--green);color:white;border-color:var(--green)}
+.step{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}.num{width:30px;height:30px;border-radius:50%;background:var(--accent);display:grid;place-items:center;font-weight:800;flex:none}
+.big{font-size:34px;font-weight:850}.tag{font-size:12px;font-weight:800;background:var(--accent);padding:6px 9px;border-radius:999px}.success{font-weight:800}.notice{background:#f1eee5;border-radius:16px;padding:13px}
 @media(max-width:380px){.grid{grid-template-columns:1fr}.top{padding-left:15px;padding-right:15px}main{padding:5px 12px}}
 </style>
 </head>
@@ -34,21 +38,11 @@ main{padding:8px 16px}.card{background:var(--card);border:1px solid var(--line);
 </div></nav>
 </div>
 <script>
-const KEY='myreset-v2';
-const OLD_KEY='myreset-v1';
+const KEY='myreset-v3', OLD_KEY='myreset-v2';
 const defaultData={
  waterGoal:2000, water:0, weight:127, goalWeight:80, eatStart:'06:00', eatEnd:'18:00',
- tasks:[
-  {id:'breakfast',time:'06:00',title:'Ontbyt',desc:'Proteïenryke ontbyt'},
-  {id:'water1',time:'08:00',title:'Drink water',desc:'300 ml'},
-  {id:'move',time:'10:00',title:'Beweging',desc:'10 minute sessie'},
-  {id:'lunch',time:'12:00',title:'Middagete',desc:'Proteïen + groente'},
-  {id:'water2',time:'14:00',title:'Drink water',desc:'300 ml'},
-  {id:'water3',time:'16:00',title:'Drink water',desc:'300 ml'},
-  {id:'dinner',time:'17:30',title:'Aandete',desc:'Proteïen + groente'},
-  {id:'fast',time:'18:00',title:'Kombuis sluit',desc:'Begin jou vas'},
-  {id:'close',time:'20:00',title:'Aandafsluiting',desc:'Berei môre voor'}
- ], done:{}, history:[], settings:{name:'Riekie'}
+ programWeek:1, movementSessions:{}, lastWaterDate:'', doneByDate:{},
+ settings:{name:'Riekie'}
 };
 const defaultFoodPlans={
  Ma:{breakfast:'2 eiers • ½ avokado • tamatie/spinasie • 1 sny volgraanbrood',lunch:'Hoender • groot slaai • klein patat',dinner:'Vis • groente • klein porsie aartappel'},
@@ -59,131 +53,176 @@ const defaultFoodPlans={
  Sa:{breakfast:'2 eiers • avokado • tamatie • 1 sny volgraanbrood',lunch:'Hoender • slaai • klein porsie aartappel',dinner:'Maer vleis • groente • klein porsie patat'},
  So:{breakfast:'Eiers • avokado • tamatie • vrugte',lunch:'Geroosterde hoender • baie groente • klein porsie aartappel',dinner:'Vis of hoender • groente • klein porsie koolhidrate'}
 };
+const progression={
+1:{tai:10,tramp:'5–10',strength:10,walk:'10–15'},
+2:{tai:15,tramp:'10',strength:12,walk:'12–15'},
+3:{tai:20,tramp:'12–15',strength:15,walk:'15'},
+4:{tai:25,tramp:'15–20',strength:18,walk:'20'},
+5:{tai:30,tramp:'20',strength:20,walk:'20–25'},
+6:{tai:30,tramp:'20–25',strength:'20–25',walk:'25–30'},
+7:{tai:30,tramp:'25',strength:25,walk:30},
+8:{tai:30,tramp:'25–30',strength:'25–30',walk:30}
+};
 let data=JSON.parse(localStorage.getItem(KEY)||'null');
 if(!data){
   const old=JSON.parse(localStorage.getItem(OLD_KEY)||'null');
-  data=old||structuredClone(defaultData);
+  if(old){
+    data={...structuredClone(defaultData),...old};
+    data.programWeek=old.programWeek||1;
+    data.movementSessions=old.movementSessions||{};
+    data.doneByDate=old.doneByDate||{};
+    data.lastWaterDate=old.lastWaterDate||'';
+  }else data=structuredClone(defaultData);
 }
 data.foodPlans=data.foodPlans||structuredClone(defaultFoodPlans);
+data.movementSessions=data.movementSessions||{};
+data.doneByDate=data.doneByDate||{};
+data.programWeek=Math.min(8,Math.max(1,Number(data.programWeek)||1));
 let selectedFoodDay=['So','Ma','Di','Wo','Do','Vr','Sa'][new Date().getDay()];
+
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function todayKey(){return new Date().toISOString().slice(0,10)}
-function doneCount(){return data.tasks.filter(t=>data.done[t.id]).length}
+function dayDone(){return data.doneByDate[todayKey()]||{}}
+function setDone(id,val){const d=dayDone();d[id]=val;data.doneByDate[todayKey()]=d}
+function done(id){return !!dayDone()[id]}
+function ensureDailyWater(){if(data.lastWaterDate!==todayKey()){data.water=0;data.lastWaterDate=todayKey();save()}}
 function fmtDate(){return new Intl.DateTimeFormat('af-ZA',{weekday:'long',day:'numeric',month:'long'}).format(new Date())}
 document.getElementById('dateText').textContent=fmtDate();
+
+
+const videos={
+ tai10:{title:'Tai Chi Walking vir beginners — Dr Paul Lam',url:'https://www.youtube.com/watch?v=7KiS1icfK6E'},
+ tai30:{title:'30 Minute Tai Chi Flow — Begin with Breath Tai Chi',url:'https://www.youtube.com/watch?v=EUiCFCvMXVw'},
+ tramp10:{title:'10-Minute Beginner Mini Trampoline — low impact',url:'https://www.youtube.com/watch?v=VZgYvW1PS4Q'},
+ tramp30:{title:'30-Minute Gentle Low Impact Rebounder — beginner/senior',url:'https://www.youtube.com/watch?v=mNZE35daeAI'},
+ strength10:{title:'10-Minute Beginner Chair Strength — low impact',url:'https://www.youtube.com/watch?v=4wjmCDk_Plo'},
+ strength20:{title:'20-Minute Low Impact Full Body Strength — no equipment',url:'https://www.youtube.com/watch?v=D6n35x5q020'},
+ walk15:{title:'15-Minute Gentle Walk at Home — beginner',url:'https://www.youtube.com/watch?v=PqLEST2TWss'}
+};
+function videoFor(type){
+ const p=data.programWeek;
+ if(type==='tai') return p>=5?videos.tai30:videos.tai10;
+ if(type==='tramp') return p>=7?videos.tramp30:videos.tramp10;
+ if(type==='strength') return p>=6?videos.strength20:videos.strength10;
+ return videos.walk15;
+}
+function watchVideo(type){
+ const v=videoFor(type);
+ window.open(v.url,'_blank','noopener');
+}
+
+function level(){return progression[data.programWeek]||progression[8]}
+function movementForToday(){
+ const dow=new Date().getDay(); // 0 Sun ... 6 Sat
+ const p=level();
+ const plans={
+ 1:{title:'Mini-trampoline',desc:`${p.tramp} min • lae impak`,key:'tramp'},
+ 2:{title:'Tai Chi Walking',desc:`${p.tai} min • stadig en beheers`,key:'tai'},
+ 3:{title:'Sagte stap',desc:`${p.walk} min • gemaklike tempo`,key:'walk'},
+ 4:{title:'Krag sonder toerusting',desc:`${p.strength} min • beginner`,key:'strength'},
+ 5:{title:'Tai Chi Walking',desc:`${p.tai} min • stadig en beheers`,key:'tai'},
+ 6:{title:'Gemaklike beweging',desc:`${p.walk} min • stap of sagte trampolien`,key:'walk'},
+ 0:{title:'Herstel + sagte Tai Chi',desc:`10–${Math.min(20,p.tai)} min • herstel is deel van die plan`,key:'recovery'}
+ };
+ return plans[dow];
+}
+function tasks(){
+ const m=movementForToday();
+ return [
+  {id:'breakfast',time:'06:00',title:'Ontbyt',desc:'Proteïenryke ontbyt'},
+  {id:'water1',time:'08:00',title:'Drink water',desc:'300 ml'},
+  {id:'move',time:'10:00',title:m.title,desc:m.desc,moveKey:m.key},
+  {id:'lunch',time:'12:00',title:'Middagete',desc:'Proteïen + groente'},
+  {id:'water2',time:'14:00',title:'Drink water',desc:'300 ml'},
+  {id:'water3',time:'16:00',title:'Drink water',desc:'300 ml'},
+  {id:'dinner',time:'17:30',title:'Aandete',desc:'Proteïen + groente'},
+  {id:'fast',time:'18:00',title:'Kombuis sluit',desc:'Begin jou vas'},
+  {id:'close',time:'20:00',title:'Aandafsluiting',desc:'Berei môre voor'}
+ ];
+}
+function doneCount(){return tasks().filter(t=>done(t.id)).length}
 function nextTask(){
- const pending=data.tasks.filter(t=>!data.done[t.id]);
- if(!pending.length)return null;
- const now=new Date(), mins=now.getHours()*60+now.getMinutes();
+ const pending=tasks().filter(t=>!done(t.id)); if(!pending.length)return null;
+ const now=new Date(),mins=now.getHours()*60+now.getMinutes();
  return pending.find(t=>{let [h,m]=t.time.split(':').map(Number);return h*60+m>=mins})||pending[0];
 }
 function taskCard(t){
- return `<div class="task ${data.done[t.id]?'done':''}" onclick="toggleTask('${t.id}')"><div class="time">${t.time}</div><div class="check">${data.done[t.id]?'✓':''}</div><div class="tasktext"><b>${t.title}</b><div class="muted">${t.desc}</div></div></div>`
+ return `<div class="task ${done(t.id)?'done':''}" onclick="toggleTask('${t.id}')"><div class="time">${t.time}</div><div class="check">${done(t.id)?'✓':''}</div><div class="tasktext"><b>${t.title}</b><div class="muted">${t.desc}</div></div></div>`
 }
 function renderToday(){
- const n=nextTask(), pct=Math.round(doneCount()/data.tasks.length*100), wp=Math.min(100,data.water/data.waterGoal*100);
+ ensureDailyWater();
+ const n=nextTask(), ts=tasks(), pct=Math.round(doneCount()/ts.length*100), wp=Math.min(100,data.water/data.waterGoal*100),m=movementForToday();
  document.getElementById('screen').innerHTML=`
- <div class="card next">${n?`<div class="eyebrow">Wat moet ek nou doen?</div><h1>${n.title}</h1><div style="margin-bottom:14px">${n.desc}</div><button class="btn primary" onclick="toggleTask('${n.id}')">✓ Ek het dit gedoen</button>`:`<div class="eyebrow">Vandag</div><h1>Jy het jou dag se plan voltooi! 🎉</h1><div>Jy het opgedaag. Dit tel.</div>`}</div>
+ <div class="card next">${n?`<div class="eyebrow">Wat moet ek nou doen?</div><h1>${n.title}</h1><div style="margin-bottom:14px">${n.desc}</div>${n.moveKey?`<div style="margin-bottom:12px"><button class="btn primary" onclick="watchVideo('${n.moveKey}')">▶️ Kyk my oefenvideo</button></div>`:''}<button class="btn primary" onclick="toggleTask('${n.id}')">✓ Ek het dit gedoen</button>`:`<div class="eyebrow">Vandag</div><h1>Jy het jou dag se plan voltooi! 🎉</h1><div>Jy het opgedaag. Dit tel.</div>`}</div>
+ <div class="card"><div class="row"><div><div class="eyebrow">Jou program</div><div class="big">Week ${data.programWeek}</div></div><span class="tag">Tai Chi ${level().tai} min</span></div><p class="muted">Die oefentyd groei geleidelik. Jy hoef nie self te onthou wanneer om op te gradeer nie.</p></div>
  <div class="grid"><div class="card"><div class="eyebrow">Water</div><div class="metric">${data.water}<span style="font-size:15px;font-weight:600"> / ${data.waterGoal} ml</span></div><div class="progress"><div class="bar" style="width:${wp}%"></div></div><button class="smallbtn" onclick="addWater(300)">+300 ml</button></div>
- <div class="card"><div class="eyebrow">Vandag</div><div class="metric">${doneCount()}/${data.tasks.length}</div><div class="muted">${pct}% van take klaar</div><div class="progress"><div class="bar" style="width:${pct}%"></div></div></div></div>
- <div class="card"><div class="row"><h3 style="margin:0">Vandag se pad</h3><span class="pill">${data.eatStart}–${data.eatEnd}</span></div>${data.tasks.map(taskCard).join('')}</div>
- <div class="card"><div class="eyebrow">Herinnering</div><b>Jy hoef nie alles te onthou nie.</b><p class="muted">Kyk net na die volgende groot groen kaart. Ons doen een ding op 'n slag.</p></div>`;
+ <div class="card"><div class="eyebrow">Vandag</div><div class="metric">${doneCount()}/${ts.length}</div><div class="muted">${pct}% van take klaar</div><div class="progress"><div class="bar" style="width:${pct}%"></div></div></div></div>
+ <div class="card"><div class="row"><h3 style="margin:0">Vandag se pad</h3><span class="pill">${data.eatStart}–${data.eatEnd}</span></div>${ts.map(taskCard).join('')}</div>
+ <div class="card"><div class="notice"><b>🌱 Een stap op 'n slag.</b><br><span class="muted">As jou liggaam nog nie gereed is vir die volgende week nie, bly ons net langer by hierdie week. Geen skuld.</span></div></div>`;
+}
+function movementCountThisWeek(){
+ const now=new Date(), day=now.getDay(), mondayOffset=day===0?-6:1-day;
+ const monday=new Date(now);monday.setDate(now.getDate()+mondayOffset);monday.setHours(0,0,0,0);
+ let count=0;
+ for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);const k=d.toISOString().slice(0,10);if(data.movementSessions[k])count++}
+ return count;
 }
 function renderWeek(){
- const days=['Ma','Di','Wo','Do','Vr','Sa','So'];
- document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Week 1</div><h2 style="margin:6px 0 4px">Jou eenvoudige weekplan</h2><p class="muted">Begin klein. Konsekwentheid is die doel.</p>
- <div class="weekday">${days.map((d,i)=>`<button class="day ${i===0?'selected':''}">${d}<br><small>${i+1}</small></button>`).join('')}</div></div>
- <div class="card"><h3>Beweging</h3>
- <div class="task"><div class="time">Ma</div><div>🏃‍♀️ Trampoline <div class="muted">10 min lae impak</div></div></div>
- <div class="task"><div class="time">Di</div><div>🧘 Tai Chi Walking <div class="muted">10 min</div></div></div>
- <div class="task"><div class="time">Wo</div><div>🚶 Sagte stap <div class="muted">10–15 min</div></div></div>
- <div class="task"><div class="time">Do</div><div>💪 Krag <div class="muted">10 min, geen toerusting</div></div></div>
- <div class="task"><div class="time">Vr</div><div>🧘 Tai Chi Walking <div class="muted">10 min</div></div></div>
- <div class="task"><div class="time">Sa</div><div>🚶 Gemaklike beweging <div class="muted">10–20 min</div></div></div>
- <div class="task"><div class="time">So</div><div>🧘 Tai Chi Walking <div class="muted">10 min</div></div></div></div>
- <div class="card"><button class="btn soft" onclick="alert('Week 1 is jou beginplan. In ’n volgende weergawe kan jy hier elke week self take, tye en maaltye invoer.')">✚ Pas weekplan aan</button></div>`;
-}
-function renderFood(){
- const days=[['Ma','Maandag'],['Di','Dinsdag'],['Wo','Woensdag'],['Do','Donderdag'],['Vr','Vrydag'],['Sa','Saterdag'],['So','Sondag']];
- const f=data.foodPlans[selectedFoodDay]||defaultFoodPlans[selectedFoodDay];
- const mealRows=[
-  ['breakfast','06:00','Ontbyt'],
-  ['lunch','12:00','Middagete'],
-  ['dinner','17:30','Aandete']
- ];
- document.getElementById('screen').innerHTML=`
- <div class="card">
-   <div class="eyebrow">My kosplan</div>
-   <h2 style="margin:6px 0 4px">Wat wil jy vandag eet?</h2>
-   <p class="muted">Kies 'n dag. Jy kan elke maaltyd self verander — die app onthou jou keuses op hierdie foon.</p>
-   <div class="weekday">
-     ${days.map(d=>`<button class="day ${selectedFoodDay===d[0]?'selected':''}" onclick="selectFoodDay('${d[0]}')">${d[0]}<br><small>${d[1].slice(0,3)}</small></button>`).join('')}
-   </div>
- </div>
- <div class="card">
-   <div class="row"><div><div class="eyebrow">${days.find(d=>d[0]===selectedFoodDay)[1]}</div><h3 style="margin:5px 0">Eetvenster ${data.eatStart} → ${data.eatEnd}</h3></div><span class="pill">Proteïen eerste</span></div>
- </div>
- ${mealRows.map(m=>`
-   <div class="card" id="meal-${m[0]}">
-     <div class="eyebrow">${m[1]}</div>
-     <div class="row">
-       <div style="flex:1"><h3 style="margin:4px 0">${m[2]}</h3><p style="margin:6px 0">${escapeHtml(f[m[0]])}</p></div>
-       <button class="smallbtn" onclick="editMeal('${m[0]}')">✏️ Verander</button>
-     </div>
-   </div>`).join('')}
- <div class="card">
-   <h3>🌙 Jou vas</h3>
-   <p>Na ${data.eatEnd} begin jou vas. Water en suikervrye drankies kan help om gehidreer te bly. Hou jou vas veilig en volhoubaar.</p>
-   <button class="btn soft" onclick="fastingStatus()">Wys my fasting-status</button>
+ const p=level(),count=movementCountThisWeek(),days=['Ma','Di','Wo','Do','Vr','Sa','So'];
+ document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Progressiewe program</div><div class="row"><h2 style="margin:6px 0">Week ${data.programWeek}</h2><span class="tag">${count}/4 sessies</span></div>
+ <p class="muted">Ons bou stadig op. Week 5 is waar Tai Chi by 30 minute uitkom.</p>
+ <div class="progress"><div class="bar" style="width:${Math.min(100,count/4*100)}%"></div></div></div>
+ <div class="card"><h3>Hier is jou huidige vlak</h3>
+ <div class="step"><div class="num">🧘</div><div><b>Tai Chi Walking</b><div class="muted">${p.tai} minute</div></div></div>
+ <div class="step"><div class="num">🏃‍♀️</div><div><b>Mini-trampoline</b><div class="muted">${p.tramp} minute, lae impak</div></div></div>
+ <div class="step"><div class="num">💪</div><div><b>Krag</b><div class="muted">${p.strength} minute, geen toerusting</div></div></div>
+ <div class="step"><div class="num">🚶</div><div><b>Stap</b><div class="muted">${p.walk} minute</div></div></div></div>
+ <div class="card"><h3>Jou 8-week pad</h3>
+ ${Object.keys(progression).map(w=>{const q=progression[w];return `<div class="task"><div class="time">W${w}</div><div><b>${q.tai} min Tai Chi</b><div class="muted">Tramp ${q.tramp} • Krag ${q.strength} • Stap ${q.walk}</div></div></div>`}).join('')}</div>
+ <div class="card">${data.programWeek<8
+ ? (count>=4?`<p class="success">🎉 Jy het ${count} sessies hierdie week aangeteken. As jy gemaklik voel, kan jy vorder.</p><button class="btn soft" onclick="advanceWeek()">✓ Ek is gereed vir Week ${data.programWeek+1}</button><p class="muted">Jy kies self. As jy nog moeg of seer is, bly net op Week ${data.programWeek}.</p>`:`<p><b>Wanneer gaan ek op?</b></p><p class="muted">Voltooi minstens 4 bewegingsessies hierdie week. Dan wys ek vir jou die knoppie om na Week ${data.programWeek+1} te beweeg.</p>`)
+ : `<p class="success">🏆 Jy is by die 30-minute Tai Chi-vlak.</p><p class="muted">Week 8 fokus daarop om dit gemaklik en volhoubaar te maak.</p>`}
  </div>`;
 }
-function escapeHtml(s){
- return String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+function advanceWeek(){if(movementCountThisWeek()<4){alert('Voltooi eers minstens 4 bewegingsessies hierdie week. ❤️');return}data.programWeek=Math.min(8,data.programWeek+1);save();render('week')}
+function renderFood(){
+ const days=[['Ma','Maandag'],['Di','Dinsdag'],['Wo','Woensdag'],['Do','Donderdag'],['Vr','Vrydag'],['Sa','Saterdag'],['So','Sondag']];
+ const f=data.foodPlans[selectedFoodDay], mealRows=[['breakfast','06:00','Ontbyt'],['lunch','12:00','Middagete'],['dinner','17:30','Aandete']];
+ document.getElementById('screen').innerHTML=`
+ <div class="card"><div class="eyebrow">My kosplan</div><h2 style="margin:6px 0 4px">Wat wil jy vandag eet?</h2><p class="muted">Kies 'n dag. Jy kan elke maaltyd self verander — die app onthou jou keuses op hierdie foon.</p>
+ <div class="weekday">${days.map(d=>`<button class="day ${selectedFoodDay===d[0]?'selected':''}" onclick="selectFoodDay('${d[0]}')">${d[0]}<br><small>${d[1].slice(0,3)}</small></button>`).join('')}</div></div>
+ <div class="card"><div class="row"><div><div class="eyebrow">${days.find(d=>d[0]===selectedFoodDay)[1]}</div><h3 style="margin:5px 0">Eetvenster ${data.eatStart} → ${data.eatEnd}</h3></div><span class="pill">Proteïen eerste</span></div></div>
+ ${mealRows.map(m=>`<div class="card" id="meal-${m[0]}"><div class="eyebrow">${m[1]}</div><div class="row"><div style="flex:1"><h3 style="margin:4px 0">${m[2]}</h3><p style="margin:6px 0">${escapeHtml(f[m[0]])}</p></div><button class="smallbtn" onclick="editMeal('${m[0]}')">✏️ Verander</button></div></div>`).join('')}
+ <div class="card"><h3>🌙 Jou vas</h3><p>Na ${data.eatEnd} begin jou vas. Water en suikervrye drankies kan help om gehidreer te bly. Hou jou vas veilig en volhoubaar.</p><button class="btn soft" onclick="fastingStatus()">Wys my fasting-status</button></div>`;
 }
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]))}
 function selectFoodDay(day){selectedFoodDay=day;render('food')}
-function editMeal(type){
- const labels={breakfast:'Ontbyt',lunch:'Middagete',dinner:'Aandete'};
- const f=data.foodPlans[selectedFoodDay];
- const card=document.getElementById('meal-'+type);
- card.innerHTML=`
-   <div class="eyebrow">${type==='breakfast'?'06:00':type==='lunch'?'12:00':'17:30'}</div>
-   <h3 style="margin:4px 0">${labels[type]}</h3>
-   <div class="field"><label>Wat wil jy eet?</label>
-     <textarea class="input" id="edit-${type}" rows="4" style="resize:vertical">${escapeHtml(f[type])}</textarea>
-   </div>
-   <div class="row" style="justify-content:flex-start">
-     <button class="btn soft" onclick="saveMeal('${type}')">✓ Stoor</button>
-     <button class="btn ghost" onclick="render('food')">Kanselleer</button>
-   </div>`;
- document.getElementById('edit-'+type).focus();
-}
-function saveMeal(type){
- const value=document.getElementById('edit-'+type).value.trim();
- if(!value){alert('Tik asseblief iets vir hierdie maaltyd.');return}
- data.foodPlans[selectedFoodDay][type]=value;
- save();
- render('food');
-}
+function editMeal(type){const labels={breakfast:'Ontbyt',lunch:'Middagete',dinner:'Aandete'},f=data.foodPlans[selectedFoodDay],card=document.getElementById('meal-'+type);card.innerHTML=`<div class="eyebrow">${type==='breakfast'?'06:00':type==='lunch'?'12:00':'17:30'}</div><h3 style="margin:4px 0">${labels[type]}</h3><div class="field"><label>Wat wil jy eet?</label><textarea class="input" id="edit-${type}" rows="4" style="resize:vertical">${escapeHtml(f[type])}</textarea></div><div class="row" style="justify-content:flex-start"><button class="btn soft" onclick="saveMeal('${type}')">✓ Stoor</button><button class="btn ghost" onclick="render('food')">Kanselleer</button></div>`;document.getElementById('edit-'+type).focus()}
+function saveMeal(type){const value=document.getElementById('edit-'+type).value.trim();if(!value){alert('Tik asseblief iets vir hierdie maaltyd.');return}data.foodPlans[selectedFoodDay][type]=value;save();render('food')}
 function renderMove(){
- document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Vandag</div><h2>Beweeg sag, maar beweeg.</h2><p class="muted">Begin op ’n vlak wat gemaklik voel. Stop as jy pyn, erge benoudheid, duiseligheid of borspyn kry.</p></div>
- ${[['🏃‍♀️','Mini-trampoline','10 min • lae impak'],['🧘','Tai Chi Walking','10 min • stadig en beheers'],['💪','Krag sonder toerusting','10 min • beginner'],['🚶','Sagte stap','10–20 min']].map((x,i)=>`<div class="card"><div class="row"><div><h3 style="margin:0">${x[0]} ${x[1]}</h3><p class="muted">${x[2]}</p></div><button class="smallbtn" onclick="startMove('${x[1]}')">Begin</button></div></div>`).join('')}
- <div class="card"><b>⚠️ Veiligheid</b><p class="muted">As jy lanklaas geoefen het of medikasie vir gewigsverlies gebruik, bespreek jou oefen- en fasting-plan met ’n gesondheidswerker.</p></div>`;
+ const p=level(),m=movementForToday();
+ const cards=[
+ ['🏃‍♀️','Mini-trampoline',`${p.tramp} min • lae impak`,'tramp'],
+ ['🧘','Tai Chi Walking',`${p.tai} min • stadig en beheers`,'tai'],
+ ['💪','Krag sonder toerusting',`${p.strength} min • beginner`,'strength'],
+ ['🚶','Sagte stap',`${p.walk} min • gemaklike tempo`,'walk']
+ ];
+ document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Week ${data.programWeek}</div><h2>Beweeg saam met jou liggaam.</h2><p class="muted">Die app verhoog die tyd geleidelik. Vandag se aanbevole sessie is <b>${m.title} — ${m.desc}</b>.</p></div>
+ ${cards.map(x=>{const v=videoFor(x[3]);return `<div class="card"><div class="row"><div style="flex:1"><h3 style="margin:0">${x[0]} ${x[1]}</h3><p class="muted">${x[2]}</p><p class="muted" style="margin:6px 0 0">🎥 ${escapeHtml(v.title)}</p></div></div><div class="row" style="justify-content:flex-start;margin-top:12px"><button class="smallbtn" onclick="watchVideo('${x[3]}')">▶️ Kyk video</button><button class="smallbtn" onclick="logMovement('${x[3]}')">✓ Klaar</button></div></div>`}).join('')}
+ <div class="card"><h3>📈 Hoe vordering werk</h3><p class="muted">Mik vir minstens 4 bewegingsessies per week. Ná 4 sessies kan jy kies om die volgende week se vlak te begin.</p><p class="muted">As 30 minute nog te veel voel, bly langer op die huidige week. <b>Vordering is nie 'n wedloop nie.</b></p></div>
+ <div class="card"><b>⚠️ Veiligheid</b><p class="muted">Begin rustig. Stop en kry mediese hulp vir borspyn, floute, erge benoudheid of ander ernstige nuwe simptome. As jy lanklaas geoefen het of medikasie vir gewigsverlies gebruik, bespreek jou plan met 'n gesondheidswerker.</p></div>`;
 }
+function logMovement(type){data.movementSessions[todayKey()]=type;setDone('move',true);save();render('move');alert('Beweging aangeteken! 🌱 Jy het vandag opgedaag.')}
 function renderProgress(){
- const pct=Math.round(doneCount()/data.tasks.length*100);
- document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Jou reis</div><h2>${data.weight} kg → ${data.goalWeight} kg</h2><div class="progress"><div class="bar" style="width:${Math.max(0,Math.min(100,((data.weight-data.goalWeight)/47)*100))}%"></div></div><p class="muted">Ons fokus eers op die volgende klein mylpaal. Geen straf, geen skuld.</p></div>
- <div class="grid"><div class="card"><div class="eyebrow">Take</div><div class="metric">${pct}%</div><div class="muted">vandag voltooi</div></div><div class="card"><div class="eyebrow">Water</div><div class="metric">${Math.round(data.water/100)/10} L</div><div class="muted">vandag</div></div></div>
- <div class="card"><h3>⚙️ My instellings</h3><div class="field"><label>Gewig (kg)</label><input class="input" id="weight" type="number" value="${data.weight}"></div><div class="field"><label>Waterdoel (ml)</label><input class="input" id="goal" type="number" value="${data.waterGoal}"></div><div class="field"><label>Naam</label><input class="input" id="name" value="${data.settings.name}"></div><button class="btn soft" onclick="saveSettings()">Stoor</button></div>`;
+ const pct=Math.round(doneCount()/tasks().length*100),p=level(),count=movementCountThisWeek();
+ document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Jou reis</div><h2>${data.weight} kg → ${data.goalWeight} kg</h2><div class="progress"><div class="bar" style="width:${Math.max(0,Math.min(100,((data.weight-data.goalWeight)/47)*100))}%"></div></div><p class="muted">Ons fokus eers op klein mylpale. Jou huidige oefenvlak is <b>Week ${data.programWeek}</b>, met ${p.tai} minute Tai Chi.</p></div>
+ <div class="grid"><div class="card"><div class="eyebrow">Take</div><div class="metric">${pct}%</div><div class="muted">vandag voltooi</div></div><div class="card"><div class="eyebrow">Week</div><div class="metric">${count}/4</div><div class="muted">bewegingsessies</div></div></div>
+ <div class="card"><h3>⚙️ My instellings</h3><div class="field"><label>Gewig (kg)</label><input class="input" id="weight" type="number" value="${data.weight}"></div><div class="field"><label>Waterdoel (ml)</label><input class="input" id="goal" type="number" value="${data.waterGoal}"></div><div class="field"><label>Naam</label><input class="input" id="name" value="${escapeHtml(data.settings.name)}"></div><button class="btn soft" onclick="saveSettings()">Stoor</button></div>`;
 }
-function render(s='today'){
- document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===s));
- ({today:renderToday,week:renderWeek,food:renderFood,move:renderMove,progress:renderProgress}[s]||renderToday)();
-}
-function toggleTask(id){data.done[id]=!data.done[id];save();render('today')}
-function addWater(n){data.water=Math.min(data.waterGoal,data.water+n);save();render('today')}
-function markMeal(name){alert(`${name} is aangeteken. ❤️`)}
-function startMove(name){alert(`${name}: begin rustig vir 10 minute. Hierdie eerste weergawe het nog nie die video-skakels ingevul nie.`)}
-function fastingStatus(){let now=new Date();let [h,m]=data.eatEnd.split(':').map(Number);let end=new Date();end.setHours(h,m,0,0);let [sh,sm]=data.eatStart.split(':').map(Number);let start=new Date();start.setHours(sh,sm,0,0);if(now>=end){let mins=Math.round((now-end)/60000);alert(`Jy is tans aan die vas. ${Math.floor(mins/60)} uur ${mins%60} minute sedert ${data.eatEnd}.`)}else alert(`Jou vas begin om ${data.eatEnd}.`)}
+function render(s='today'){document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===s));({today:renderToday,week:renderWeek,food:renderFood,move:renderMove,progress:renderProgress}[s]||renderToday)()}
+function toggleTask(id){setDone(id,!done(id));save();render('today')}
+function addWater(n){ensureDailyWater();data.water=Math.min(data.waterGoal,data.water+n);save();render('today')}
+function fastingStatus(){let now=new Date(),[h,m]=data.eatEnd.split(':').map(Number),end=new Date();end.setHours(h,m,0,0);if(now>=end){let mins=Math.round((now-end)/60000);alert(`Jy is tans aan die vas. ${Math.floor(mins/60)} uur ${mins%60} minute sedert ${data.eatEnd}.`)}else alert(`Jou vas begin om ${data.eatEnd}.`)}
 function saveSettings(){data.weight=Number(document.getElementById('weight').value)||data.weight;data.waterGoal=Number(document.getElementById('goal').value)||data.waterGoal;data.settings.name=document.getElementById('name').value||'Riekie';save();render('progress')}
 document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>render(b.dataset.screen)));
 render();
