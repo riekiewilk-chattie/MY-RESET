@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#6f8f72">
 <link rel="manifest" href="manifest.json">
 <title>My Reset</title>
+<meta name="app-version" content="2.0">
 <style>
 :root{--green:#6f8f72;--dark:#294333;--cream:#f7f4ec;--card:#fffdf8;--line:#e4dfd3;--muted:#6d756f;--accent:#d9eadb;--danger:#a75d58}
 *{box-sizing:border-box} body{margin:0;background:var(--cream);color:var(--dark);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
@@ -16,7 +17,7 @@ main{padding:8px 16px}.card{background:var(--card);border:1px solid var(--line);
 .progress{height:11px;background:#e7e4da;border-radius:99px;overflow:hidden;margin:12px 0}.bar{height:100%;background:var(--green);border-radius:99px}
 .task{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.task:last-child{border-bottom:0}.check{width:30px;height:30px;border-radius:50%;border:2px solid #aab2aa;display:grid;place-items:center;flex:none;background:white}.done .check{background:var(--green);border-color:var(--green);color:white}.done .tasktext{text-decoration:line-through;color:#8a908b}.time{font-weight:800;font-size:13px;color:var(--muted);width:52px}.nav{position:fixed;bottom:0;left:0;right:0;background:#fffdf9ee;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:5}.navinner{max-width:620px;width:100%;display:grid;grid-template-columns:repeat(5,1fr)}.nav button{border:0;background:transparent;padding:11px 3px 13px;color:var(--muted);font-size:11px;font-weight:700}.nav button.active{color:var(--green)}.nav span{display:block;font-size:20px;margin-bottom:2px}
 .hidden{display:none!important}.pill{display:inline-block;padding:7px 10px;border-radius:99px;background:var(--accent);font-size:12px;font-weight:800}.smallbtn{padding:8px 11px;border-radius:12px;border:1px solid var(--line);background:white;font-weight:750}
-.input{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:white;font-size:16px}.field{margin:12px 0}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}.weekday{display:flex;gap:6px;overflow:auto;padding-bottom:5px}.day{min-width:54px;border:1px solid var(--line);background:white;border-radius:13px;padding:8px;text-align:center}.day.selected{background:var(--green);color:white;border-color:var(--green)}
+.input{width:100%;padding:12px;font-family:inherit;border:1px solid var(--line);border-radius:12px;background:white;font-size:16px}.field{margin:12px 0}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}.weekday{display:flex;gap:6px;overflow:auto;padding-bottom:5px}.day{min-width:54px;border:1px solid var(--line);background:white;border-radius:13px;padding:8px;text-align:center}.day.selected{background:var(--green);color:white;border-color:var(--green)}
 @media(max-width:380px){.grid{grid-template-columns:1fr}.top{padding-left:15px;padding-right:15px}main{padding:5px 12px}}
 </style>
 </head>
@@ -33,7 +34,8 @@ main{padding:8px 16px}.card{background:var(--card);border:1px solid var(--line);
 </div></nav>
 </div>
 <script>
-const KEY='myreset-v1';
+const KEY='myreset-v2';
+const OLD_KEY='myreset-v1';
 const defaultData={
  waterGoal:2000, water:0, weight:127, goalWeight:80, eatStart:'06:00', eatEnd:'18:00',
  tasks:[
@@ -48,7 +50,22 @@ const defaultData={
   {id:'close',time:'20:00',title:'Aandafsluiting',desc:'Berei môre voor'}
  ], done:{}, history:[], settings:{name:'Riekie'}
 };
-let data=JSON.parse(localStorage.getItem(KEY)||'null')||defaultData;
+const defaultFoodPlans={
+ Ma:{breakfast:'2 eiers • ½ avokado • tamatie/spinasie • 1 sny volgraanbrood',lunch:'Hoender • groot slaai • klein patat',dinner:'Vis • groente • klein porsie aartappel'},
+ Di:{breakfast:'2 eiers • avokado • tamatie • klein porsie vrugte',lunch:'Maer maalvleis • groente • klein porsie bruinrys',dinner:'Hoender • geroosterde groente • klein aartappel'},
+ Wo:{breakfast:'Griekse jogurt • bessies • 1 eetlepel neute',lunch:'Tuna • groot slaai • 1 sny volgraanbrood',dinner:'Vis • groen groente • klein porsie patat'},
+ Do:{breakfast:'2 eiers • sampioene • tamatie • avokado',lunch:'Hoender • groente • klein porsie quinoa/rys',dinner:'Maer vleis • groot porsie groente • klein aartappel'},
+ Vr:{breakfast:'Omelet met eiers, spinasie en kaas • tamatie',lunch:'Hoender of tuna • groot slaai • klein patat',dinner:'Vis • gemengde groente • klein porsie rys'},
+ Sa:{breakfast:'2 eiers • avokado • tamatie • 1 sny volgraanbrood',lunch:'Hoender • slaai • klein porsie aartappel',dinner:'Maer vleis • groente • klein porsie patat'},
+ So:{breakfast:'Eiers • avokado • tamatie • vrugte',lunch:'Geroosterde hoender • baie groente • klein porsie aartappel',dinner:'Vis of hoender • groente • klein porsie koolhidrate'}
+};
+let data=JSON.parse(localStorage.getItem(KEY)||'null');
+if(!data){
+  const old=JSON.parse(localStorage.getItem(OLD_KEY)||'null');
+  data=old||structuredClone(defaultData);
+}
+data.foodPlans=data.foodPlans||structuredClone(defaultFoodPlans);
+let selectedFoodDay=['So','Ma','Di','Wo','Do','Vr','Sa'][new Date().getDay()];
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function todayKey(){return new Date().toISOString().slice(0,10)}
 function doneCount(){return data.tasks.filter(t=>data.done[t.id]).length}
@@ -87,13 +104,65 @@ function renderWeek(){
  <div class="card"><button class="btn soft" onclick="alert('Week 1 is jou beginplan. In ’n volgende weergawe kan jy hier elke week self take, tye en maaltye invoer.')">✚ Pas weekplan aan</button></div>`;
 }
 function renderFood(){
- document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Eetvenster</div><h2>${data.eatStart} → ${data.eatEnd}</h2><p class="muted">Proteïen eerste • groente • beheerde koolhidrate • genoeg vloeistof</p></div>
- ${[
- ['06:00','Ontbyt','2 eiers • ½ avokado • tamatie/spinasie • 1 sny volgraanbrood'],
- ['12:00','Middagete','Hoender • groot slaai • klein patat'],
- ['17:30','Aandete','Vis • groente • klein porsie aartappel']
- ].map(x=>`<div class="card"><div class="eyebrow">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p><button class="smallbtn" onclick="markMeal('${x[1]}')">✓ Ek het geëet</button></div>`).join('')}
- <div class="card"><h3>🌙 Fasting</h3><p>Na ${data.eatEnd} begin jou vas. Jy hoef nie langer te vas as wat vir jou veilig en volhoubaar is nie.</p><button class="btn soft" onclick="fastingStatus()">Wys my fasting-status</button></div>`;
+ const days=[['Ma','Maandag'],['Di','Dinsdag'],['Wo','Woensdag'],['Do','Donderdag'],['Vr','Vrydag'],['Sa','Saterdag'],['So','Sondag']];
+ const f=data.foodPlans[selectedFoodDay]||defaultFoodPlans[selectedFoodDay];
+ const mealRows=[
+  ['breakfast','06:00','Ontbyt'],
+  ['lunch','12:00','Middagete'],
+  ['dinner','17:30','Aandete']
+ ];
+ document.getElementById('screen').innerHTML=`
+ <div class="card">
+   <div class="eyebrow">My kosplan</div>
+   <h2 style="margin:6px 0 4px">Wat wil jy vandag eet?</h2>
+   <p class="muted">Kies 'n dag. Jy kan elke maaltyd self verander — die app onthou jou keuses op hierdie foon.</p>
+   <div class="weekday">
+     ${days.map(d=>`<button class="day ${selectedFoodDay===d[0]?'selected':''}" onclick="selectFoodDay('${d[0]}')">${d[0]}<br><small>${d[1].slice(0,3)}</small></button>`).join('')}
+   </div>
+ </div>
+ <div class="card">
+   <div class="row"><div><div class="eyebrow">${days.find(d=>d[0]===selectedFoodDay)[1]}</div><h3 style="margin:5px 0">Eetvenster ${data.eatStart} → ${data.eatEnd}</h3></div><span class="pill">Proteïen eerste</span></div>
+ </div>
+ ${mealRows.map(m=>`
+   <div class="card" id="meal-${m[0]}">
+     <div class="eyebrow">${m[1]}</div>
+     <div class="row">
+       <div style="flex:1"><h3 style="margin:4px 0">${m[2]}</h3><p style="margin:6px 0">${escapeHtml(f[m[0]])}</p></div>
+       <button class="smallbtn" onclick="editMeal('${m[0]}')">✏️ Verander</button>
+     </div>
+   </div>`).join('')}
+ <div class="card">
+   <h3>🌙 Jou vas</h3>
+   <p>Na ${data.eatEnd} begin jou vas. Water en suikervrye drankies kan help om gehidreer te bly. Hou jou vas veilig en volhoubaar.</p>
+   <button class="btn soft" onclick="fastingStatus()">Wys my fasting-status</button>
+ </div>`;
+}
+function escapeHtml(s){
+ return String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+}
+function selectFoodDay(day){selectedFoodDay=day;render('food')}
+function editMeal(type){
+ const labels={breakfast:'Ontbyt',lunch:'Middagete',dinner:'Aandete'};
+ const f=data.foodPlans[selectedFoodDay];
+ const card=document.getElementById('meal-'+type);
+ card.innerHTML=`
+   <div class="eyebrow">${type==='breakfast'?'06:00':type==='lunch'?'12:00':'17:30'}</div>
+   <h3 style="margin:4px 0">${labels[type]}</h3>
+   <div class="field"><label>Wat wil jy eet?</label>
+     <textarea class="input" id="edit-${type}" rows="4" style="resize:vertical">${escapeHtml(f[type])}</textarea>
+   </div>
+   <div class="row" style="justify-content:flex-start">
+     <button class="btn soft" onclick="saveMeal('${type}')">✓ Stoor</button>
+     <button class="btn ghost" onclick="render('food')">Kanselleer</button>
+   </div>`;
+ document.getElementById('edit-'+type).focus();
+}
+function saveMeal(type){
+ const value=document.getElementById('edit-'+type).value.trim();
+ if(!value){alert('Tik asseblief iets vir hierdie maaltyd.');return}
+ data.foodPlans[selectedFoodDay][type]=value;
+ save();
+ render('food');
 }
 function renderMove(){
  document.getElementById('screen').innerHTML=`<div class="card"><div class="eyebrow">Vandag</div><h2>Beweeg sag, maar beweeg.</h2><p class="muted">Begin op ’n vlak wat gemaklik voel. Stop as jy pyn, erge benoudheid, duiseligheid of borspyn kry.</p></div>
