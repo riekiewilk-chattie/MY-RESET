@@ -228,5 +228,88 @@ document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',(
 render();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
+
+<style>
+.diary-entry{display:grid;gap:10px;margin-top:12px}
+.diary-entry input,.diary-entry select,.diary-entry textarea{width:100%;box-sizing:border-box;padding:12px;border-radius:12px;border:1px solid #d9e2d7;background:#fff;font:inherit}
+.diary-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.diary-actions button{border:0;border-radius:12px;padding:11px 14px;cursor:pointer;font:inherit}
+.diary-list{display:grid;gap:8px;margin-top:14px}
+.diary-item{padding:12px;border-radius:14px;background:#f7faf6;border:1px solid #e4ebe2}
+.report-box{white-space:pre-wrap;line-height:1.5}
+</style>
+<script>
+(function(){
+const KEY='myResetDiaryV5';
+const load=()=>JSON.parse(localStorage.getItem(KEY)||'[]');
+const save=x=>localStorage.setItem(KEY,JSON.stringify(x));
+const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,10)};
+const weekStart=d=>{const x=new Date(d+'T12:00:00'),n=(x.getDay()+6)%7;x.setDate(x.getDate()-n);return x.toISOString().slice(0,10)};
+const weekEnd=s=>{const x=new Date(s+'T12:00:00');x.setDate(x.getDate()+6);return x.toISOString().slice(0,10)};
+const esc=s=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+function addNav(){
+ if(document.getElementById('diaryNavV5'))return;
+ const nav=document.querySelector('nav');
+ if(nav){const b=document.createElement('button');b.id='diaryNavV5';b.textContent='📖 Dagboek';b.onclick=openDiary;nav.appendChild(b)}
+ else{const b=document.createElement('button');b.id='diaryFloatV5';b.textContent='📖 Dagboek';b.style='position:fixed;right:14px;bottom:82px;z-index:9999;border:0;border-radius:14px;padding:12px 14px;font:inherit';b.onclick=openDiary;document.body.appendChild(b)}
+}
+function openDiary(){
+ let el=document.getElementById('diaryV5');
+ if(!el){
+  el=document.createElement('section');el.id='diaryV5';el.className='screen';
+  el.innerHTML=`<div class="card"><h2>📖 My Dagboek</h2><p>Skryf eenvoudig neer wat jy eet en drink. Ons gebruik dit om jou week se gewoontes raak te sien.</p>
+  <div class="diary-entry">
+  <label>Datum<input id="dDate" type="date" value="${today()}"></label>
+  <label>Tyd<input id="dTime" type="time"></label>
+  <label>Ek het...<select id="dType"><option value="food">🍽️ Eet</option><option value="drink">🥤 Gedrink</option></select></label>
+  <label>Wat?<input id="dWhat" placeholder="bv. 2 eiers / koffie / water"></label>
+  <label>Hoeveel? <input id="dAmount" placeholder="bv. 500 ml (opsioneel)"></label>
+  <label>Nota<textarea id="dNote" rows="2" placeholder="Opsioneel"></textarea></label></div>
+  <div class="diary-actions"><button onclick="saveDiaryV5()">➕ Voeg by dagboek</button><button onclick="showReportV5()">📊 My week se verslag</button></div></div>
+  <div class="card"><h2>📋 Vandag se inskrywings</h2><div id="todayDiaryV5" class="diary-list"></div></div>
+  <div id="reportCardV5" class="card" style="display:none"><h2>📊 My Week</h2><div id="reportV5" class="report-box"></div>
+  <div class="diary-actions"><button onclick="copyReportV5()">💬 Stuur my week vir Chattie</button></div></div>`;
+  document.body.appendChild(el);
+ }
+ document.querySelectorAll('.screen').forEach(s=>{if(s!==el)s.style.display='none'});el.style.display='';renderTodayV5();
+}
+window.saveDiaryV5=function(){
+ const x={id:Date.now(),date:document.getElementById('dDate').value||today(),time:document.getElementById('dTime').value||'',type:document.getElementById('dType').value,what:document.getElementById('dWhat').value.trim(),amount:document.getElementById('dAmount').value.trim(),note:document.getElementById('dNote').value.trim()};
+ if(!x.what){alert('Skryf asseblief neer wat jy geëet of gedrink het.');return}
+ const a=load();a.push(x);save(a);document.getElementById('dWhat').value='';document.getElementById('dAmount').value='';document.getElementById('dNote').value='';renderTodayV5()
+};
+window.deleteDiaryV5=function(id){save(load().filter(x=>x.id!==id));renderTodayV5();showReportV5()};
+function renderTodayV5(){
+ const box=document.getElementById('todayDiaryV5');if(!box)return;
+ const a=load().filter(x=>x.date===today()).sort((p,q)=>p.time.localeCompare(q.time));
+ box.innerHTML=a.length?a.map(x=>`<div class="diary-item"><b>${x.type==='food'?'🍽️':'🥤'} ${esc(x.what)}</b>${x.amount?' — '+esc(x.amount):''}<br><small>${esc(x.time||'Geen tyd')}${x.note?' · '+esc(x.note):''}</small><br><button onclick="deleteDiaryV5(${x.id})">Verwyder</button></div>`).join(''):'<p>Nog niks vandag aangeteken nie.</p>'
+}
+window.showReportV5=function(){
+ const s=weekStart(today()),e=weekEnd(s),a=load().filter(x=>x.date>=s&&x.date<=e),food=a.filter(x=>x.type==='food'),drink=a.filter(x=>x.type==='drink'),water=drink.filter(x=>/water/i.test(x.what));
+ let ml=0;water.forEach(x=>{const m=(x.amount||'').replace(',','.').match(/(\d+(?:\.\d+)?)\s*(ml|l)?/i);if(m){let n=parseFloat(m[1]);ml+=m[2]&&m[2].toLowerCase()==='l'?n*1000:n}});
+ const late=food.filter(x=>x.time>='18:00').length,snacks=food.filter(x=>/tuss|snack|peusel|koek|sjokolade|chips|soet/i.test(x.what)).length;
+ let i=[];i.push(ml?`💧 Aangetekende water: ${Math.round(ml).toLocaleString('af-ZA')} ml totaal.`:'💧 Geen meetbare waterhoeveelheid is hierdie week aangeteken nie.');
+ if(late)i.push(`🌙 ${late} kos-inskrywing(s) was ná 18:00. Ons kan kyk of dit ’n patroon word.`);
+ if(snacks)i.push(`🍫 ${snacks} moontlike peusel-/tussendeur-inskrywing(s) is aangeteken.`);
+ if(!late&&food.length)i.push('🌙 Geen kos ná 18:00 is aangeteken nie.');
+ if(!snacks&&food.length)i.push('🍽️ Geen duidelike peusel-patroon uit die aangetekende kos nie.');
+ if(!food.length)i.push('🍽️ Te min kosdata om hierdie week ’n goeie patroon te beoordeel.');
+ const report=`WEEK: ${s} – ${e}
+
+🍽️ KOS
+${food.length} kos-inskrywings.
+
+🥤 DRINK
+${drink.length} drink-inskrywings.
+${i.map((x,n)=>`${n+1}. ${x}`).join('\n')}
+
+🎯 VOLGENDE WEEK
+Hou aan om alles so eerlik as moontlik aan te teken. Hoe vollediger die dagboek, hoe beter kan Chattie jou patrone help verstaan.`;
+ document.getElementById('reportCardV5').style.display='';document.getElementById('reportV5').textContent=report
+};
+window.copyReportV5=function(){showReportV5();const t=document.getElementById('reportV5').textContent;navigator.clipboard?.writeText(t).then(()=>alert('Die weekverslag is gekopieer. Plak dit nou in jou Chat met Chattie.')).catch(()=>alert(t))};
+document.addEventListener('DOMContentLoaded',()=>setTimeout(addNav,300));
+})();
+</script>
 </body>
 </html>

@@ -3,8 +3,7 @@
   "short_name": "My Reset",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f7f4ec",
-  "theme_color": "#6f8f72",
-  "lang": "af",
-  "description": "My persoonlike Reset en gesondheidsroetine"
+  "background_color": "#f7faf6",
+  "theme_color": "#5f8068",
+  "icons": []
 }
