@@ -285,27 +285,52 @@ function renderTodayV5(){
  box.innerHTML=a.length?a.map(x=>`<div class="diary-item"><b>${x.type==='food'?'🍽️':'🥤'} ${esc(x.what)}</b>${x.amount?' — '+esc(x.amount):''}<br><small>${esc(x.time||'Geen tyd')}${x.note?' · '+esc(x.note):''}</small><br><button onclick="deleteDiaryV5(${x.id})">Verwyder</button></div>`).join(''):'<p>Nog niks vandag aangeteken nie.</p>'
 }
 window.showReportV5=function(){
- const s=weekStart(today()),e=weekEnd(s),a=load().filter(x=>x.date>=s&&x.date<=e),food=a.filter(x=>x.type==='food'),drink=a.filter(x=>x.type==='drink'),water=drink.filter(x=>/water/i.test(x.what));
- let ml=0;water.forEach(x=>{const m=(x.amount||'').replace(',','.').match(/(\d+(?:\.\d+)?)\s*(ml|l)?/i);if(m){let n=parseFloat(m[1]);ml+=m[2]&&m[2].toLowerCase()==='l'?n*1000:n}});
- const late=food.filter(x=>x.time>='18:00').length,snacks=food.filter(x=>/tuss|snack|peusel|koek|sjokolade|chips|soet/i.test(x.what)).length;
- let i=[];i.push(ml?`💧 Aangetekende water: ${Math.round(ml).toLocaleString('af-ZA')} ml totaal.`:'💧 Geen meetbare waterhoeveelheid is hierdie week aangeteken nie.');
- if(late)i.push(`🌙 ${late} kos-inskrywing(s) was ná 18:00. Ons kan kyk of dit ’n patroon word.`);
- if(snacks)i.push(`🍫 ${snacks} moontlike peusel-/tussendeur-inskrywing(s) is aangeteken.`);
- if(!late&&food.length)i.push('🌙 Geen kos ná 18:00 is aangeteken nie.');
- if(!snacks&&food.length)i.push('🍽️ Geen duidelike peusel-patroon uit die aangetekende kos nie.');
- if(!food.length)i.push('🍽️ Te min kosdata om hierdie week ’n goeie patroon te beoordeel.');
- const report=`WEEK: ${s} – ${e}
+ const s=weekStart(today()),e=weekEnd(s),a=load().filter(x=>x.date>=s&&x.date<=e);
+ const food=a.filter(x=>x.type==='food'),drink=a.filter(x=>x.type==='drink');
+ const water=drink.filter(x=>/water/i.test(x.what));
+ let ml=0;
+ water.forEach(x=>{const m=(x.amount||'').replace(',','.').match(/(\d+(?:\.\d+)?)\s*(ml|l)?/i);if(m){let n=parseFloat(m[1]);ml+=m[2]&&m[2].toLowerCase()==='l'?n*1000:n}});
+ const foodDays=new Set(food.map(x=>x.date)).size,drinkDays=new Set(drink.map(x=>x.date)).size;
+ const late=food.filter(x=>x.time&&x.time>='18:00').length;
+ const snacks=food.filter(x=>/tuss|snack|peusel|koek|sjokolade|chips|soet|lekkers/i.test(x.what)).length;
+ const sugary=drink.filter(x=>/koeldrank|coke|coca|sprite|fanta|juice|sap|energiedrank|energy drink/i.test(x.what)).length;
+ const waterDays=new Set(water.map(x=>x.date)).size,avgWater=ml/7;
+ let movementDays=0;
+ try{const raw=localStorage.getItem('myReset');const d=raw?JSON.parse(raw):null;const ms=d&&d.movementSessions?d.movementSessions:{};for(let i=0;i<7;i++){const q=new Date(s+'T12:00:00');q.setDate(q.getDate()+i);if(ms[q.toISOString().slice(0,10)])movementDays++}}catch(err){}
+ const enoughFood=foodDays>=3&&food.length>=6,enoughDrink=drinkDays>=3&&drink.length>=6;
+ let good=[],watch=[],next=[];
+ if(waterDays>=4)good.push('Jy het water op minstens 4 dae aangeteken — hou aan met dié gewoonte.');
+ if(foodDays>=5)good.push('Jy het kos op 5 of meer dae aangeteken, so ons begin ’n bruikbare prentjie van jou eetpatroon kry.');
+ if(movementDays>=4)good.push('Jy het minstens 4 bewegingsessies hierdie week aangeteken.');
+ if(!good.length)good.push('Jy het begin om jou gewoontes aan te teken. Dit is die belangrikste eerste stap.');
+ if(!enoughFood)watch.push('🍽️ Nog nie genoeg kosdata om ’n betroubare eetpatroon te bepaal nie. Teken soveel as moontlik van jou etes en peuselhappies aan.');
+ else{if(snacks>=3)watch.push(`🍫 Jy het ${snacks} moontlike peusel-/tussendeur-inskrywings. Ons kan volgende week kyk op watter tye dit gebeur.`);if(late>=2)watch.push(`🌙 Jy het ${late} keer ná 18:00 geëet. Ons kan kyk of dit met honger, gewoonte of ’n spesifieke situasie verband hou.`);if(!snacks&&!late)watch.push('🍽️ Ek sien tans nie ’n sterk peusel- of laat-eetpatroon in jou aangetekende kos nie.')}
+ if(!enoughDrink)watch.push('🥤 Nog nie genoeg drinkdata om jou drinkpatroon goed te beoordeel nie.');
+ else{if(avgWater<1400)watch.push(`💧 Jou aangetekende water is gemiddeld ongeveer ${Math.round(avgWater).toLocaleString('af-ZA')} ml per dag. Dit lyk na ’n goeie plek om volgende week te verbeter.`);else if(avgWater<2000)watch.push(`💧 Jou aangetekende water is gemiddeld ongeveer ${Math.round(avgWater).toLocaleString('af-ZA')} ml per dag. Jy is op pad na jou 2 L-teiken.`);else watch.push('💧 Jou aangetekende water is gemiddeld minstens 2 L per dag. Mooi!');if(sugary>=2)watch.push(`🥤 ${sugary} drank-inskrywings lyk soos sap, koeldrank of energiedrank. Ons kan kyk of minder daarvan jou volgende fokus kan wees.`)}
+ if(enoughFood||enoughDrink){if(avgWater<2000)next.push('Maak water jou eerste drankkeuse en werk geleidelik na 2 L per dag.');if(snacks>=3)next.push('Teken elke peusel-oomblik aan — ook klein happies — sodat ons die sneller kan raaksien.');if(late>=2)next.push('Teken neer hoekom jy ná 18:00 geëet het: honger, lus, gewoonte of emosie.')}
+ if(!next.length)next.push('Hou net aan om alles eerlik aan te teken. Ons soek patrone, nie perfeksie nie.');
+ const report=`MY RESET — WEEKVERSLAG
+WEEK: ${s} – ${e}
 
-🍽️ KOS
-${food.length} kos-inskrywings.
+📊 OORSIG
+🍽️ Kos: ${food.length} inskrywings op ${foodDays} dae
+🥤 Drink: ${drink.length} inskrywings op ${drinkDays} dae
+💧 Aangetekende water: ${Math.round(ml).toLocaleString('af-ZA')} ml totaal
+💧 Water gemiddeld: ${Math.round(avgWater).toLocaleString('af-ZA')} ml/dag
+🏃 Beweging aangeteken: ${movementDays} dae
 
-🥤 DRINK
-${drink.length} drink-inskrywings.
-${i.map((x,n)=>`${n+1}. ${x}`).join('\n')}
+🔎 WAT GAAN GOED?
+${good.map((x,i)=>`${i+1}. ${x}`).join('\n')}
 
-🎯 VOLGENDE WEEK
-Hou aan om alles so eerlik as moontlik aan te teken. Hoe vollediger die dagboek, hoe beter kan Chattie jou patrone help verstaan.`;
- document.getElementById('reportCardV5').style.display='';document.getElementById('reportV5').textContent=report
+⚠️ WAARNA KYK ONS?
+${watch.map((x,i)=>`${i+1}. ${x}`).join('\n')}
+
+🎯 MY FOKUS VIR VOLGENDE WEEK
+${next.slice(0,3).map((x,i)=>`${i+1}. ${x}`).join('\n')}
+
+💬 CHATTIE
+Stuur hierdie verslag vir Chattie. Sy kan die week se data saam met jou bespreek en help bepaal wat om volgende te verander.`;
+ document.getElementById('reportCardV5').style.display='';document.getElementById('reportV5').textContent=report;
 };
 window.copyReportV5=function(){showReportV5();const t=document.getElementById('reportV5').textContent;navigator.clipboard?.writeText(t).then(()=>alert('Die weekverslag is gekopieer. Plak dit nou in jou Chat met Chattie.')).catch(()=>alert(t))};
 document.addEventListener('DOMContentLoaded',()=>setTimeout(addNav,300));
