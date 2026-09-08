@@ -1,9 +1,12 @@
 {
-  "name": "My Reset",
+  "id": "./?my-reset-v7",
+  "name": "My Reset V7",
   "short_name": "My Reset",
-  "start_url": "./",
+  "start_url": "./?my-reset-v7",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f7faf6",
   "theme_color": "#5f8068",
+  "description": "My persoonlike Reset en gesondheidsroetine",
   "icons": []
 }
